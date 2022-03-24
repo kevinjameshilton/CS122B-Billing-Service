@@ -25,7 +25,7 @@ spring:
   application:
     name: BillingService
   datasource:
-    url: jdbc:mysql://localhost:3306/billing
+    url: jdbc:mysql://localhost:3306
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
