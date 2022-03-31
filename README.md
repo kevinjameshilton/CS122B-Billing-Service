@@ -1,6 +1,6 @@
 # CS122B Backend 3 - The Billing Service
 
-#### [Config](#config)
+#### [Application Settings](#application-settings)
 
 #### [Database](#database)
 
@@ -17,7 +17,10 @@
 
 #### [Notes](#notes-1)
 
-## Config
+## Application Settings
+
+This file is already provided for you and configure Spring Boot's settings
+
 ##### `application.yml`
 
 ```yml
