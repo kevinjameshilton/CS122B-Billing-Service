@@ -19,7 +19,8 @@
 
 ## Application Settings
 
-This file is already provided for you and configure Spring Boot's settings
+Spring Boot can has a large number of settings that can be set with a file called `application.yml`. \
+This file is already provided for you and is placed here for reference.
 
 ##### `application.yml`
 
