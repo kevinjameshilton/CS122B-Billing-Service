@@ -3,6 +3,9 @@
 #### [Application Settings](#application-settings)
 
 #### [Database](#database)
+ - [Schemas](#schemas)
+ - [Tables](#tables)
+ - [Initial Data](#initial-data)
 
 #### [Endpoints](#endpoints)
 1. [POST: Cart Insert](#cart-insert)
@@ -49,6 +52,20 @@ billing:
 ``` 
 
 ## Database
+
+### Schemas
+
+<table>
+  <thead>
+    <tr>
+      <th align="left" width="1100">🗄 idm</th>
+      <th align="left" width="1100">🗄 movies</th>
+      <th align="left" width="1100">🗄 billing</th>
+    </tr>
+  </thead>
+</table>
+
+### Tables
 
 <table>
   <tbody>
@@ -223,6 +240,10 @@ billing:
     </tr>
   </tbody>
 </table>
+
+### Initial Data
+
+All the data to initialize your database is found in the `db` folder here: [db folder](/db).
 
 # Endpoints
 
