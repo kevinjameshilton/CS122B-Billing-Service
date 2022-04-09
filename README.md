@@ -6,6 +6,11 @@
  - [Schemas](#schemas)
  - [Tables](#tables)
  - [Initial Data](#initial-data)
+ 
+#### [Notes](#notes)
+ - [Order of Validation](#order-of-validation)
+ - [JsonInclude](#jsoninclude)
+ - [Result](#result)
 
 #### [Endpoints](#endpoints)
 1. [POST: Cart Insert](#cart-insert)
@@ -18,7 +23,7 @@
 8. [GET: Order List](#order-list)
 9. [GET: Order Detail](#order-detail)
 
-#### [Notes](#notes-1)
+#### [BigDecimal](#bigdecimal)
 
 ## Application Settings
 
@@ -245,7 +250,7 @@ billing:
 
 All the data to initialize your database is found in the `db` folder here: [db folder](/db).
 
-# Endpoints
+# Notes
 
 ### Order of Validation
 All <code>❗ 400: Bad Request</code> Results must be checked first, and returned before any other action is made. \
@@ -278,6 +283,8 @@ This is done by insuring that all <code>null</code> values are dropped by either
 ### Result
 All <code>Result</code> objects are avaible as static constants inside of the <code>com.github.klefstad_teaching.cs122b.core.result.BillingResults</code> class.
 These can be used rather than creating your own.
+
+# Endpoints
 
 ## Cart Insert
 Insert a given <code>movieId</code> into a user's cart with the given <code>quantity</code>
@@ -1213,9 +1220,7 @@ items: Item[]
   </tbody>
 </table>
 
-# Notes
-
-## BigDecimal
+# BigDecimal
 
 When dealing with currency we want to ensure that we are working with the same scale and we are rounding in a consistent manner when applying discounts.
 
