@@ -1,6 +1,9 @@
 # CS122B Backend 3 - The Billing Service
 
-#### [Application Settings](#application-settings)
+#### [Application](#application)
+ - [application.yml](#applicationyml)
+ - [Resources](#Resources)
+ - [Tests](#Tests)
 
 #### [Database](#database)
  - [Schemas](#schemas)
@@ -24,36 +27,34 @@
 8. [GET: Order List](#order-list)
 9. [GET: Order Detail](#order-detail)
 
-## Application Settings
 
-Spring Boot can has a large number of settings that can be set with a file called `application.yml`. \
-This file is already provided for you and is placed here for reference.
+## Application
 
-##### `application.yml`
+### application.yml
 
-```yml
-spring:
-  application:
-    name: BillingService
-  datasource:
-    url: jdbc:mysql://localhost:3306
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+Spring Boot can has a large number of settings that can be set with a file called `application.yml`.
 
-server:
-  address: 0.0.0.0
-  port: 8083
-  error: # These settings are for debugging
-    include-exception: true
-    include-message: always
+**These file should NEVER be modified**
 
-logging:
-  file:
-    name: ./BillingService.log
+ 1. [Main application.yml](/src/main/resources/application.yml)
+ 2. [Test application.yml](/src/test/resources/application.yml)
 
-billing:
-  stripe-api-key: sk_test_...
-``` 
+### Resources
+
+There are two folders in this project that contain resources, and application settings
+
+**These file should NEVER be modified**
+
+ 1. [Main Resources](/src/main/resources)
+ 2. [Test Resources](/src/test/resources)
+
+### Tests
+
+There is a Single class that containt all of our test cases: 
+
+**This file should NEVER be modified**
+
+ 1. [BillingServiceTest](/src/test/java/com/github/klefstad_teaching/cs122b/billing/BillingServiceTest.java)
 
 ## Database
 
