@@ -36,8 +36,8 @@ Spring Boot can has a large number of settings that can be set with a file calle
 
 **These file should NEVER be modified**
 
- 1. [Main application.yml](/src/main/resources/application.yml)
- 2. [Test application.yml](/src/test/resources/application.yml)
+ - [Main application.yml](/src/main/resources/application.yml)
+ - [Test application.yml](/src/test/resources/application.yml)
 
 ### Resources
 
@@ -45,8 +45,8 @@ There are two folders in this project that contain resources, and application se
 
 **These file should NEVER be modified**
 
- 1. [Main Resources](/src/main/resources)
- 2. [Test Resources](/src/test/resources)
+ - [Main Resources](/src/main/resources)
+ - [Test Resources](/src/test/resources)
 
 ### Tests
 
@@ -54,7 +54,7 @@ There is a Single class that containt all of our test cases:
 
 **This file should NEVER be modified**
 
- 1. [BillingServiceTest](/src/test/java/com/github/klefstad_teaching/cs122b/billing/BillingServiceTest.java)
+ - [BillingServiceTest](/src/test/java/com/github/klefstad_teaching/cs122b/billing/BillingServiceTest.java)
 
 ## Database
 
