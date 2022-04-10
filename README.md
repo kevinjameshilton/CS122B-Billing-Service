@@ -1,9 +1,10 @@
 # CS122B Backend 3 - The Billing Service
 
 #### [Application](#application)
+ - [pom.xml](#pomxml)
  - [application.yml](#applicationyml)
- - [Resources](#Resources)
- - [Tests](#Tests)
+ - [Resources](#resources)
+ - [Tests](#tests)
 
 #### [Database](#database)
  - [Schemas](#schemas)
@@ -27,32 +28,33 @@
 8. [GET: Order List](#order-list)
 9. [GET: Order Detail](#order-detail)
 
-
 ## Application
+
+Our application depends on a lot of files and resources to be able to run correctly. These files have been provided for you and are listed here for your reference. These files should **NEVER** be modified and must be left **AS IS**.
+
+### pom.xml
+
+Maven gets all its settings from a file called `pom.xml`. This file determines the dependencies we will use in our project as well as the plugins we use for compiling, testing, building, ect..
+
+ - [pom.xml](pom.xml)
 
 ### application.yml
 
-Spring Boot can has a large number of settings that can be set with a file called `application.yml`.
-
-**These file should NEVER be modified**
+Spring Boot has a large number of settings that can be set with a file called `application.yml`. We have already created this file for you and have filled it with some settings. There is a file for the main application as well as one for the tests. 
 
  - [Main application.yml](/src/main/resources/application.yml)
  - [Test application.yml](/src/test/resources/application.yml)
 
 ### Resources
 
-There are two folders in this project that contain resources, and application settings
-
-**These file should NEVER be modified**
+There are two folders in this project that contain resources, and application settings, as well as files required for the tests.
 
  - [Main Resources](/src/main/resources)
  - [Test Resources](/src/test/resources)
 
 ### Tests
 
-There is a Single class that containt all of our test cases: 
-
-**This file should NEVER be modified**
+There is a Single class that contain all of our test cases: 
 
  - [BillingServiceTest](/src/test/java/com/github/klefstad_teaching/cs122b/billing/BillingServiceTest.java)
 
