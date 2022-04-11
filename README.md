@@ -833,7 +833,7 @@ Creates a <code>PaymentIntent</code> with <code>Stripe</code>
 
 ### PaymentIntent
 The PaymentIntent should be created with these three properties
-1. **Amount:** The total amount of the carts contents. When applying discount we apply the discount to the `unitPrice` first with `RoundingMode.DOWN` and a scale of `2`. Refer to Activity 5 for how to deal with [BigDecimal](#https://github.com/klefstad-teaching/CS122B-A5-Stripe#bigdecimal) on how to deal with `BigDecimal`'s especially the last part with dealing with scale and rounding.
+1. **Amount:** The total amount of the carts contents. When applying discount we apply the discount to the `unitPrice` first with `RoundingMode.DOWN` and a scale of `2`. Refer to Activity 5 for how to deal with [BigDecimal](https://github.com/klefstad-teaching/CS122B-A5-Stripe#bigdecimal) on how to deal with `BigDecimal`'s especially the last part with dealing with scale and rounding.
 2. **Description:** The description of the movie's titles in list format (<title>, <title>, ... , <title>). 
 3. **Metadata:** The key-value pair of "userId": <userId stored in the user's JWT>
 
