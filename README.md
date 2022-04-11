@@ -833,11 +833,11 @@ Creates a <code>PaymentIntent</code> with <code>Stripe</code>
 
 ### PaymentIntent
 The PaymentIntent should be created with these three properties
-1. **Amount:** The total amount of the carts contents. When applying discount we apply the discount to the <code>unitPrice</code> first with <code>RoundingMode.DOWN</code> and a scale of <code>2</code>. Refer to [Notes](#notes) on how to deal with <code>BigDecimal</code>'s especially the last part with dealing with scale and rounding.
+1. **Amount:** The total amount of the carts contents. When applying discount we apply the discount to the `unitPrice` first with `RoundingMode.DOWN` and a scale of `2`. Refer to Activity 5 for how to deal with [BigDecimal](#https://github.com/klefstad-teaching/CS122B-A5-Stripe#bigdecimal) on how to deal with `BigDecimal`'s especially the last part with dealing with scale and rounding.
 2. **Description:** The description of the movie's titles in list format (<title>, <title>, ... , <title>). 
 3. **Metadata:** The key-value pair of "userId": <userId stored in the user's JWT>
 
-Returning the newly created <code>PaymentIntent</code>'s <code>id</code> and <code>clientSecret</code>
+Returning the newly created `PaymentIntent`'s `id` and `clientSecret`
 
 ### Path
 ```http 
@@ -927,14 +927,14 @@ clientSecret: String</pre></td>
 </table>
 
 ## Order Complete
-Once the order payment is accepted on the frontend we must retrieve the <code>PaymentIntent</code> from <code>Stripe</code> by calling <code>PaymentIntent.retrieve("paymentIntentId")</code> and verifying it.
+Once the order payment is accepted on the frontend we must retrieve the `PaymentIntent` from `Stripe` by calling `PaymentIntent.retrieve("paymentIntentId")` and verifying it.
 
 ### Verification
 PaymentIntent is verified by checking these two things:
-1. **Payment Status:** We verify the status by ensuring that <code>paymentIntent.getStatus()</code> is <code>"succeeded"</code>. 
-2. **Correct User:** We verify that the user's <code>userId</code> calling this endpoint has the same id as the one stored in this <code>PaymentIntent</code>'s meta data by calling <code>paymentIntent.getMetadata().get("userId")</code>
+1. **Payment Status:** We verify the status by ensuring that `paymentIntent.getStatus()` is `"succeeded"`. 
+2. **Correct User:** We verify that the user's `userId` calling this endpoint has the same id as the one stored in this `PaymentIntent`'s meta data by calling `paymentIntent.getMetadata().get("userId")`
 
-Once we verify that the payment has succeeded then we create a new <code>billing.sale</code> record and then populate the <code>billing.sale_item</code> with the contents of the user's <code>billing.cart</code>. Once that is done the current users cart must be cleared.
+Once we verify that the payment has succeeded then we create a new `billing.sale` record and then populate the `billing.sale_item` with the contents of the user's `billing.cart`. Once that is done the current users cart must be cleared.
 
 ### Path
 ```http 
@@ -1022,8 +1022,7 @@ paymentIntentId: String</pre></td>
 </table>
 
 ## Order List
-Return a list of sales found for the given user. To keep this endpoint simple return only the last <code>five</code> sales ordered by the most recent sales first.
-
+Return a list of sales found for the given user. To keep this endpoint simple return only the last `five` sales ordered by the most recent sales first.
 
 ### Path
 ```http 
