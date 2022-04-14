@@ -483,10 +483,6 @@ quantity: Integer</pre></td>
       <th align="left">Description </th>
     </tr>
     <tr>
-      <td><code>email</code></td><td><code>Yes</code></td><td>User's email</td>
-    </tr>
-    <tr></tr>
-    <tr>
       <td><code>movieId</code></td><td><code>Yes</code></td><td>Movie Id of the movie to update</td>
     </tr>
     <tr></tr>
