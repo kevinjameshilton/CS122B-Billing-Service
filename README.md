@@ -1,8 +1,21 @@
 # CS122B Backend 3 - The Billing Service
 
-#### [Application Settings](#application-settings)
+#### [Application](#application)
+ - [pom.xml](#pomxml)
+ - [application.yml](#applicationyml)
+ - [Resources](#resources)
+ - [Tests](#tests)
 
 #### [Database](#database)
+ - [Schemas](#schemas)
+ - [Tables](#tables)
+ - [Initial Data](#initial-data)
+ 
+#### [Notes](#notes)
+ - [Order of Validation](#order-of-validation)
+ - [JsonInclude](#jsoninclude)
+ - [Result](#result)
+ - [SignedJWT](#signedjwt)
 
 #### [Endpoints](#endpoints)
 1. [POST: Cart Insert](#cart-insert)
@@ -15,40 +28,51 @@
 8. [GET: Order List](#order-list)
 9. [GET: Order Detail](#order-detail)
 
-#### [Notes](#notes-1)
+## Application
 
-## Application Settings
+Our application depends on a lot of files and resources to be able to run correctly. These files have been provided for you and are listed here for your reference. These files should **NEVER** be modified and must be left **AS IS**.
 
-Spring Boot can has a large number of settings that can be set with a file called `application.yml`. \
-This file is already provided for you and is placed here for reference.
+### pom.xml
 
-##### `application.yml`
+Maven gets all its settings from a file called `pom.xml`. This file determines the dependencies we will use in our project as well as the plugins we use for compiling, testing, building, ect..
 
-```yml
-spring:
-  application:
-    name: BillingService
-  datasource:
-    url: jdbc:mysql://localhost:3306
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+ - [pom.xml](pom.xml)
 
-server:
-  address: 0.0.0.0
-  port: 8083
-  error: # These settings are for debugging
-    include-exception: true
-    include-message: always
+### application.yml
 
-logging:
-  file:
-    name: ./BillingService.log
+Spring Boot has a large number of settings that can be set with a file called `application.yml`. We have already created this file for you and have filled it with some settings. There is a file for the main application as well as one for the tests. 
 
-billing:
-  stripe-api-key: sk_test_...
-``` 
+ - [Main application.yml](/src/main/resources/application.yml)
+ - [Test application.yml](/src/test/resources/application.yml)
+
+### Resources
+
+There are two folders in this project that contain resources, and application settings, as well as files required for the tests.
+
+ - [Main Resources](/src/main/resources)
+ - [Test Resources](/src/test/resources)
+
+### Tests
+
+There is a Single class that contain all of our test cases: 
+
+ - [BillingServiceTest](/src/test/java/com/github/klefstad_teaching/cs122b/billing/BillingServiceTest.java)
 
 ## Database
+
+### Schemas
+
+<table>
+  <thead>
+    <tr>
+      <th align="left" width="1100">🗄 idm</th>
+      <th align="left" width="1100">🗄 movies</th>
+      <th align="left" width="1100">🗄 billing</th>
+    </tr>
+  </thead>
+</table>
+
+### Tables
 
 <table>
   <tbody>
@@ -224,11 +248,15 @@ billing:
   </tbody>
 </table>
 
-# Endpoints
+### Initial Data
+
+All the data to initialize your database is found in the `db` folder here: [db folder](/db).
+
+# Notes
 
 ### Order of Validation
-All <code>❗ 400: Bad Request</code> Results must be checked first, and returned before any other action is made. \
-The order of the checks within <code>❗ 400: Bad Request</code> is not tested as each Result is tested individually.
+All `❗ 400: Bad Request` Results must be checked first, and returned before any other action is made. \
+The order of the checks within `❗ 400: Bad Request` is not tested as each Result is tested individually.
 
 ### JsonInclude
 In the case of non-successful results, where values are expected, the values should not be included, for example.
@@ -241,7 +269,7 @@ In the case of non-successful results, where values are expected, the values sho
    "value": null 
 }
 ```
-the <code>value</code> key should not be included: 
+the `value` key should not be included: 
 ```json
 {
    "result": {
@@ -250,13 +278,28 @@ the <code>value</code> key should not be included:
    }
 }
 ```
-This is done by insuring that all <code>null</code> values are dropped by either:
-- Having your Model extend <code>ResponseModel<Model></code>, or
-- Putting the <code>@JsonInclude(JsonInclude.Include.NON_NULL)</code> on your Model class
+This is done by insuring that all `null` values are dropped by either:
+- Having your Model extend `ResponseModel<Model>`, or
+- Putting the `@JsonInclude(JsonInclude.Include.NON_NULL)` on your Model class
   
 ### Result
-All <code>Result</code> objects are avaible as static constants inside of the <code>com.github.klefstad_teaching.cs122b.core.result.BillingResults</code> class.
+All `Result` objects are available as static constants inside of the `com.github.klefstad_teaching.cs122b.core.result.BillingResults` class.
 These can be used rather than creating your own.
+
+### SignedJWT
+All endpoints in this service are considered 'privilged' as in, the user calling the endpoint must be authorized and as such must included their serialized `SignedJWT` inlcuded in the header of the request under the `Authorization` header. In the test cases you'll see that we are including these headers with JWT's for your convenience when testing.
+
+In Spring there is a way to automatically take this header and turn it into a `SignedJWT` (This is already done for you by a provided filter here: [JWTAuthenticationFilter](https://github.com/klefstad-teaching/CS122B-Core/blob/main/src/main/java/com/github/klefstad_teaching/cs122b/core/security/JWTAuthenticationFilter.java)). There is also a way to "ask" spring for this `SignedJWT` by using the `@AuthenticationPrincipal SignedJWT user` function parameter in the endpoint like so:
+
+```java
+@GetMapping("/path")
+public ResponseEntity<ResponseModel> endpoint(@AuthenticationPrincipal SignedJWT user)
+{
+    ...
+}
+```
+
+# Endpoints
 
 ## Cart Insert
 Insert a given <code>movieId</code> into a user's cart with the given <code>quantity</code>
@@ -439,10 +482,6 @@ quantity: Integer</pre></td>
       <th align="left">Required</th>
       <th align="left">Description </th>
     </tr>
-    <tr>
-      <td><code>email</code></td><td><code>Yes</code></td><td>User's email</td>
-    </tr>
-    <tr></tr>
     <tr>
       <td><code>movieId</code></td><td><code>Yes</code></td><td>Movie Id of the movie to update</td>
     </tr>
@@ -790,11 +829,11 @@ Creates a <code>PaymentIntent</code> with <code>Stripe</code>
 
 ### PaymentIntent
 The PaymentIntent should be created with these three properties
-1. **Amount:** The total amount of the carts contents. When applying discount we apply the discount to the <code>unitPrice</code> first with <code>RoundingMode.DOWN</code> and a scale of <code>2</code>. Refer to [Notes](#notes) on how to deal with <code>BigDecimal</code>'s especially the last part with dealing with scale and rounding.
+1. **Amount:** The total amount of the carts contents. When applying discount we apply the discount to the `unitPrice` first with `RoundingMode.DOWN` and a scale of `2`. Refer to Activity 5 for how to deal with [BigDecimal](https://github.com/klefstad-teaching/CS122B-A5-Stripe#bigdecimal) on how to deal with `BigDecimal`'s especially the last part with dealing with scale and rounding.
 2. **Description:** The description of the movie's titles in list format (<title>, <title>, ... , <title>). 
 3. **Metadata:** The key-value pair of "userId": <userId stored in the user's JWT>
 
-Returning the newly created <code>PaymentIntent</code>'s <code>id</code> and <code>clientSecret</code>
+Returning the newly created `PaymentIntent`'s `id` and `clientSecret`
 
 ### Path
 ```http 
@@ -884,14 +923,14 @@ clientSecret: String</pre></td>
 </table>
 
 ## Order Complete
-Once the order payment is accepted on the frontend we must retrieve the <code>PaymentIntent</code> from <code>Stripe</code> by calling <code>PaymentIntent.retrieve("paymentIntentId")</code> and verifying it.
+Once the order payment is accepted on the frontend we must retrieve the `PaymentIntent` from `Stripe` by calling `PaymentIntent.retrieve("paymentIntentId")` and verifying it.
 
 ### Verification
 PaymentIntent is verified by checking these two things:
-1. **Payment Status:** We verify the status by ensuring that <code>paymentIntent.getStatus()</code> is <code>"succeeded"</code>. 
-2. **Correct User:** We verify that the user's <code>userId</code> calling this endpoint has the same id as the one stored in this <code>PaymentIntent</code>'s meta data by calling <code>paymentIntent.getMetadata().get("userId")</code>
+1. **Payment Status:** We verify the status by ensuring that `paymentIntent.getStatus()` is `"succeeded"`. 
+2. **Correct User:** We verify that the user's `userId` calling this endpoint has the same id as the one stored in this `PaymentIntent`'s meta data by calling `paymentIntent.getMetadata().get("userId")`
 
-Once we verify that the payment has succeeded then we create a new <code>billing.sale</code> record and then populate the <code>billing.sale_item</code> with the contents of the user's <code>billing.cart</code>. Once that is done the current users cart must be cleared.
+Once we verify that the payment has succeeded then we create a new `billing.sale` record and then populate the `billing.sale_item` with the contents of the user's `billing.cart`. Once that is done the current users cart must be cleared.
 
 ### Path
 ```http 
@@ -979,8 +1018,7 @@ paymentIntentId: String</pre></td>
 </table>
 
 ## Order List
-Return a list of sales found for the given user. To keep this endpoint simple return only the last <code>five</code> sales ordered by the most recent sales first.
-
+Return a list of sales found for the given user. To keep this endpoint simple return only the last `five` sales ordered by the most recent sales first.
 
 ### Path
 ```http 
@@ -1191,91 +1229,3 @@ items: Item[]
     </tr>
   </tbody>
 </table>
-
-# Notes
-
-## BigDecimal
-
-When dealing with currency we want to ensure that we are working with the same scale and we are rounding in a consistent manner when applying discounts.
-
-For this we will be using Java's <code>BigDecimal</code> class. This allows us the control we need and also provides us with the numbers string format.
-
-### Important
-When calling methods to calculate a <code>BigDecimal</code> a **NEW** <code>BigDecimal</code> is created and returned. The <code>BigDecimal</code> whos method was called **IS NOT MODIFIED**. This is because all instances of <code>BigDecimal</code> are **IMMUTABLE**.
-
-```java
-BigDecimal first = BigDecimal.valueOf(1);
-BigDecimal second = BigDecimal.valueOf(2);
-
-first.add(second); // Because the return value is not saved this does nothing
-
-System.out.println(first); // prints 1 as it is Immutable
-
-BigDecimal sum = first.add(second); 
-
-System.out.println(sum); // prints 3 because the new instance of BigDecimal when calling .add() is saved to sum
-```
-
-### Common Pattern
-
-When working with <code>BigDecimal</code> it is usually common to keep *overriding* the initial value with the new value.
-
-```java
-BigDecimal total = BigDecimal.ZERO;
-
-total = total.add(BigDecimal.valueOf(1.5));  // Overwrites total with the new value
-total = total.add(BigDecimal.valueOf(2.5));  // Overwrites total with the new value
-total = total.add(BigDecimal.valueOf(0.01)); // Overwrites total with the new value
-
-System.out.println(total); // prints 4.01
-
-```
-
-### Scale and RoundingMode
-
-One of the primary uses of <code>BigDecimal</code> is the ability to set the <code>scale</code> or in other terms, the amount of places after the decimal that we care about.
-
-```java
-BigDecimal hundreds = BigDecimal.valueOf(1).setScale(2);
-
-System.out.println(hundreds); // prints 1.00
-
-BigDecimal thousands = BigDecimal.valueOf(1).setScale(3);
-
-System.out.println(thousands); // prints 1.000
-```
-
-This also helps when we need to round the value:
-
-```java
-BigDecimal num = BigDecimal.valueOf(1.555);
-
-// Setting the scale to 1
-System.out.println(num.setScale(1, RoundingMode.DOWN));    // prints 1.5
-
-System.out.println(num.setScale(1, RoundingMode.UP));      // prints 1.6
-
-System.out.println(num.setScale(1, RoundingMode.HALF_UP)); // prints 1.6
-
-
-// Setting the scale to 2
-System.out.println(num.setScale(2, RoundingMode.DOWN));    // prints 1.55
-
-System.out.println(num.setScale(2, RoundingMode.UP));      // prints 1.56
-
-System.out.println(num.setScale(2, RoundingMode.HALF_UP)); // prints 1.56
-
-
-// THROWS ERROR Because there is a remainder left after dividing because
-// RoundingMode.UNNECESSARY is the same as saying: There should be no remainder
-System.out.println(num.setScale(1, RoundingMode.UNNECESSARY)); // Throws Error
-```
-
-We can also just do all the math we need then apply the <code>RoundingMode</code> when we set the <code>scale</code>
-
-```java
-BigDecimal discounted = BigDecimal.valueOf(19.99).multiply(BigDecimal.valueOf(0.85)); 
-
-discounted = discounted.setScale(2, RoundingMode.DOWN);
-```
-  
