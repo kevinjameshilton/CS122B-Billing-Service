@@ -16,6 +16,7 @@
  - [JsonInclude](#jsoninclude)
  - [Result](#result)
  - [SignedJWT](#signedjwt)
+ - [BigDecimal](#bigdecimal)
 
 #### [Endpoints](#endpoints)
 1. [POST: Cart Insert](#cart-insert)
@@ -298,6 +299,12 @@ public ResponseEntity<ResponseModel> endpoint(@AuthenticationPrincipal SignedJWT
     ...
 }
 ```
+
+### BigDecimal
+
+**Very Important** For all values that deal with money, Including those in our `ResponseModel` We want to make sure we are returning a type of `BigDecimal` with a scale set to `2`. The tests will fail if we do not have it set to this scale as json considers: `14.5500` different than `14.55`.
+
+Refer to Activity 5 for how to deal with [BigDecimal](https://github.com/klefstad-teaching/CS122B-A5-Stripe#bigdecimal) on how to deal with `BigDecimal`'s especially the last part with dealing with scale and rounding.
 
 # Endpoints
 
@@ -646,7 +653,7 @@ result: Result
 </table>
 
 ## Cart Retrieve
-Retrieve's all items from the user's cart with some movie details
+Retrieve's all items from the user's cart with some movie details. If the user has the `Premium` Role then we should report back with the "discounted rate".
 
 ### Path
 ```http 
@@ -692,9 +699,9 @@ GET /cart/retrieve
 result: Result
     code: Integer
     message: String
-total: BigDecimal
+total: BigDecimal (Set to a scale of 2)
 items: Item[]
-    unitPrice: BigDecimal
+    unitPrice: BigDecimal (Set to a scale of 2)
     quantity: Integer
     movieId: Long
     movieTitle: String
@@ -825,15 +832,23 @@ result: Result
 </table>
 
 ## Order Payment
-Creates a <code>PaymentIntent</code> with <code>Stripe</code>
+Creates a `PaymentIntent` with `Stripe` returning the newly created `PaymentIntent`'s `id` and `clientSecret`
 
 ### PaymentIntent
 The PaymentIntent should be created with these three properties
-1. **Amount:** The total amount of the carts contents. When applying discount we apply the discount to the `unitPrice` first with `RoundingMode.DOWN` and a scale of `2`. Refer to Activity 5 for how to deal with [BigDecimal](https://github.com/klefstad-teaching/CS122B-A5-Stripe#bigdecimal) on how to deal with `BigDecimal`'s especially the last part with dealing with scale and rounding.
-2. **Description:** The description of the movie's titles in list format (<title>, <title>, ... , <title>). 
-3. **Metadata:** The key-value pair of "userId": <userId stored in the user's JWT>
+1. **Amount:** The total amount of the carts contents. 
+2. **Description:** The description of the movie's titles in list format (\<title>, \<title>, ... , \<title>). 
+3. **Metadata:** The key-value pair of "userId": \<userId stored in the users JWT>
+ 
+#### Formula for applying the discount:
+1. `DiscountedUnitPrice` = ( `UnitPrice` * (1 - (`Discount` / 100.0))) 
+   - Notice we use 100.0 (A double with the .0 at the end) this is **VERY** important, We want discount to become a double! We will get the wrong answer if we do not do this.
+3. `DiscountedUnitPrice` scale set to `2` with `RounderingMode.DOWN`
+4. `Total` for each movie = `NewUnitPrice` * `Quantity`
+5. `Total` for order is the sum of all the `total`s;
 
-Returning the newly created `PaymentIntent`'s `id` and `clientSecret`
+Refer to Activity 5 for how to deal with [BigDecimal](https://github.com/klefstad-teaching/CS122B-A5-Stripe#bigdecimal) on how to deal with `BigDecimal`'s especially the last part with dealing with scale and rounding.
+
 
 ### Path
 ```http 
@@ -1066,7 +1081,7 @@ result: Result
     message: String
 sales: Sale[]
     saleId: Long
-    total: BigDecimal
+    total: BigDecimal (Set to a scale of 2)
     orderDate: Instant</pre></td>
       <td align="left"><pre lang="json">
 {
@@ -1115,7 +1130,7 @@ sales: Sale[]
 
 
 ## Order Detail
-Return a detailed view of a given sale by its saleId
+Return a detailed view of a given sale by its saleId.
 
 
 ### Path
@@ -1178,9 +1193,9 @@ GET /order/detail/{saleId}
 result: Result
     code: Integer
     message: String
-total: BigDecimal
+total: BigDecimal (Set to a scale of 2)
 items: Item[]
-    unitPrice: BigDecimal
+    unitPrice: BigDecimal (Set to a scale of 2)
     quantity: Integer
     movieId: Long
     movieTitle: String
