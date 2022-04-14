@@ -834,10 +834,11 @@ The PaymentIntent should be created with these three properties
 3. **Metadata:** The key-value pair of "userId": \<userId stored in the users JWT>
  
 #### Formula for applying the discount:
-1. `DiscountedUnitPrice` = ( `UnitPrice` * (1 - (`Discount` / 100.0)))
-2. `DiscountedUnitPrice` scale set to `2` with `RounderingMode.DOWN`
-3. `Total` for each movie = `NewUnitPrice` * `Quantity`
-4. `Total` for order is the sum of all the `total`s;
+1. `DiscountedUnitPrice` = ( `UnitPrice` * (1 - (`Discount` / 100.0))) 
+   - Notice we use 100.0 (A double with the .0 at the end) this is **VERY** important, We want discount to become a double! We will get the wrong answer if we do not do this.
+3. `DiscountedUnitPrice` scale set to `2` with `RounderingMode.DOWN`
+4. `Total` for each movie = `NewUnitPrice` * `Quantity`
+5. `Total` for order is the sum of all the `total`s;
 
 Refer to Activity 5 for how to deal with [BigDecimal](https://github.com/klefstad-teaching/CS122B-A5-Stripe#bigdecimal) on how to deal with `BigDecimal`'s especially the last part with dealing with scale and rounding.
 
