@@ -653,7 +653,7 @@ result: Result
 </table>
 
 ## Cart Retrieve
-Retrieve's all items from the user's cart with some movie details
+Retrieve's all items from the user's cart with some movie details. If the user has the `Premium` Role then we should report back with the "discounted rate".
 
 ### Path
 ```http 
@@ -1130,7 +1130,7 @@ sales: Sale[]
 
 
 ## Order Detail
-Return a detailed view of a given sale by its saleId
+Return a detailed view of a given sale by its saleId.
 
 
 ### Path
