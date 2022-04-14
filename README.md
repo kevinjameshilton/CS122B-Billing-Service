@@ -699,7 +699,7 @@ GET /cart/retrieve
 result: Result
     code: Integer
     message: String
-total: BigDecimal
+total: BigDecimal (Set to a scale of 2)
 items: Item[]
     unitPrice: BigDecimal (Set to a scale of 2)
     quantity: Integer
