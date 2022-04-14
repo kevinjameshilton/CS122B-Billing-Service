@@ -16,6 +16,7 @@
  - [JsonInclude](#jsoninclude)
  - [Result](#result)
  - [SignedJWT](#signedjwt)
+ - [BigDecimal](#bigdecimal)
 
 #### [Endpoints](#endpoints)
 1. [POST: Cart Insert](#cart-insert)
@@ -298,6 +299,12 @@ public ResponseEntity<ResponseModel> endpoint(@AuthenticationPrincipal SignedJWT
     ...
 }
 ```
+
+### BigDecimal
+
+**Very Important** For all values that deal with money, Including those in our `ResponseModel` We want to make sure we are returning a type of `BigDecimal` with a scale set to `2`. The tests will fail if we do not have it set to this scale as json considers: `14.5500` different than `14.55`.
+
+Refer to Activity 5 for how to deal with [BigDecimal](https://github.com/klefstad-teaching/CS122B-A5-Stripe#bigdecimal) on how to deal with `BigDecimal`'s especially the last part with dealing with scale and rounding.
 
 # Endpoints
 
@@ -694,7 +701,7 @@ result: Result
     message: String
 total: BigDecimal
 items: Item[]
-    unitPrice: BigDecimal
+    unitPrice: BigDecimal (Set to a scale of 2)
     quantity: Integer
     movieId: Long
     movieTitle: String
@@ -1074,7 +1081,7 @@ result: Result
     message: String
 sales: Sale[]
     saleId: Long
-    total: BigDecimal
+    total: BigDecimal (Set to a scale of 2)
     orderDate: Instant</pre></td>
       <td align="left"><pre lang="json">
 {
@@ -1186,9 +1193,9 @@ GET /order/detail/{saleId}
 result: Result
     code: Integer
     message: String
-total: BigDecimal
+total: BigDecimal (Set to a scale of 2)
 items: Item[]
-    unitPrice: BigDecimal
+    unitPrice: BigDecimal (Set to a scale of 2)
     quantity: Integer
     movieId: Long
     movieTitle: String
