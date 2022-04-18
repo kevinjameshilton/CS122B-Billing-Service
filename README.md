@@ -300,6 +300,12 @@ public ResponseEntity<ResponseModel> endpoint(@AuthenticationPrincipal SignedJWT
 }
 ```
 
+We can then get information out of the `SignedJWT` by using `user.getJWTClaimsSet()` and then getting the corrosponging claim by using `getClaim()`. Note that we get the claim by the key we used when we set the claim in the idm.
+
+We set our userId using `.claim(JWTManager.CLAIM_ID, userId)` we can get that id by using `getCustomClaim(JWTManager.CLAIM_ID)`. However this returns a type of `Object` if we know what the type of the specific claim is we can use the helper functions. We know we set `JWTManager.CLAIM_ID` as a `Long` so we can use `getLongClaim(JWTManager.CLAIM_ID)` to get it as a type of `Long`.
+
+A convient function to use to get our roles our of our `SignedJWT` is  `.getStringListClaim(JWTManager.CLAIM_ROLES)` which returns our user's roles as a list of `String`s
+
 ### BigDecimal
 
 **Very Important** For all values that deal with money, Including those in our `ResponseModel` We want to make sure we are returning a type of `BigDecimal` with a scale set to `2`. The tests will fail if we do not have it set to this scale as json considers: `14.5500` different than `14.55`.
