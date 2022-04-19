@@ -955,7 +955,7 @@ Once we verify that the payment has succeeded then we create a new `billing.sale
 
 ### Path
 ```http 
-GET /order/complete
+POST /order/complete
 ```
 
 ### API
