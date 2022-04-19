@@ -858,7 +858,7 @@ Refer to Activity 5 for how to deal with [BigDecimal](https://github.com/klefsta
 
 ### Path
 ```http 
-POST /order/payment
+GET /order/payment
 ```
 
 ### API
