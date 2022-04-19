@@ -1,5 +1,7 @@
 # CS122B Backend 3 - The Billing Service
 
+#### [Stripe](#stripe)
+
 #### [Application](#application)
  - [pom.xml](#pomxml)
  - [application.yml](#applicationyml)
@@ -17,6 +19,7 @@
  - [Result](#result)
  - [SignedJWT](#signedjwt)
  - [BigDecimal](#bigdecimal)
+ - [Applying Discount](#applying-discount)
 
 #### [Endpoints](#endpoints)
 1. [POST: Cart Insert](#cart-insert)
@@ -28,6 +31,18 @@
 7. [POST: Order Complete](#order-complete)
 8. [GET: Order List](#order-list)
 9. [GET: Order Detail](#order-detail)
+
+## Stripe
+
+Before we can start on this backend we will need a developer account from Stripe, and get our api keys:
+
+1. Go to [Stripe Developer Docs](https://stripe.com/docs/development) and create an account.
+2. Click on the `Dashboard ->` button in the top right hand corner to access our Dashboard.
+3. Click on the `Developers` button in the top right hand corner to access out developer info.
+4. Click on the `API keys` tab on the left menu.
+5. Copy the `Secret key` (you will need to press `Revel test key` to see it) and paste it as your `STRIPE_API_KEY` enviroment variable in your configuration settings. (Just like how we did with our database credentials)
+
+We will need the public key later for our front end so refrence this guide when you want to return to that webpage. We just want to use the test data and test keys. You may close your account after the course if you would like.
 
 ## Application
 
@@ -311,6 +326,17 @@ A convient function to use to get our roles our of our `SignedJWT` is  `.getStri
 **Very Important** For all values that deal with money, Including those in our `ResponseModel` We want to make sure we are returning a type of `BigDecimal` with a scale set to `2`. The tests will fail if we do not have it set to this scale as json considers: `14.5500` different than `14.55`.
 
 Refer to Activity 5 for how to deal with [BigDecimal](https://github.com/klefstad-teaching/CS122B-A5-Stripe#bigdecimal) on how to deal with `BigDecimal`'s especially the last part with dealing with scale and rounding.
+
+### Applying Discount For Premium Users
+
+User's that have the `Premium` role have a diffrent `UnitPrice` that must be calculated by using the `discount` column in the table. Calculating the `DiscountedUnitPrice` requires we follow a very specific algorithm that is described below:
+
+#### Formula for applying the discount
+1. `DiscountedUnitPrice` = ( `UnitPrice` * (1 - (`Discount` / 100.0))) 
+   - Notice we use 100.0 (A double with the .0 at the end) this is **VERY** important, We want discount to become a double! We will get the wrong answer if we do not do this.
+3. `DiscountedUnitPrice` scale set to `2` with `RounderingMode.DOWN`
+4. `Total` for each movie = `NewUnitPrice` * `Quantity`
+5. `Total` for order is the sum of all the `total`s;
 
 # Endpoints
 
@@ -659,7 +685,7 @@ result: Result
 </table>
 
 ## Cart Retrieve
-Retrieve's all items from the user's cart with some movie details. If the user has the `Premium` Role then we should report back with the "discounted rate".
+Retrieve's all items from the user's cart with some movie details. If the user has the `Premium` Role then we should report back with the "discounted rate". (Refer to [Formula for applying the discount](#formula-for-applying-the-discount) on how to do this for `Premium` users)
 
 ### Path
 ```http 
@@ -842,16 +868,9 @@ Creates a `PaymentIntent` with `Stripe` returning the newly created `PaymentInte
 
 ### PaymentIntent
 The PaymentIntent should be created with these three properties
-1. **Amount:** The total amount of the carts contents. 
+1. **Amount:** The total amount of the carts contents. (Refer to [Formula for applying the discount](#formula-for-applying-the-discount) on how to do this for `Premium` users)
 2. **Description:** The description of the movie's titles in list format (\<title>, \<title>, ... , \<title>). 
 3. **Metadata:** The key-value pair of "userId": \<userId stored in the users JWT>
- 
-#### Formula for applying the discount:
-1. `DiscountedUnitPrice` = ( `UnitPrice` * (1 - (`Discount` / 100.0))) 
-   - Notice we use 100.0 (A double with the .0 at the end) this is **VERY** important, We want discount to become a double! We will get the wrong answer if we do not do this.
-3. `DiscountedUnitPrice` scale set to `2` with `RounderingMode.DOWN`
-4. `Total` for each movie = `NewUnitPrice` * `Quantity`
-5. `Total` for order is the sum of all the `total`s;
 
 Refer to Activity 5 for how to deal with [BigDecimal](https://github.com/klefstad-teaching/CS122B-A5-Stripe#bigdecimal) on how to deal with `BigDecimal`'s especially the last part with dealing with scale and rounding.
 
