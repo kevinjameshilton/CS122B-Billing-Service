@@ -1025,7 +1025,7 @@ paymentIntentId: String</pre></td>
       <th align="left">Description </th>
     </tr>
     <tr>
-      <td><code>paymentIntentId</code></td><td><code>Yes</code></td><td>paymentIntentId that was returned in <code>/order/payment<code></td>
+      <td><code>paymentIntentId</code></td><td><code>Yes</code></td><td>paymentIntentId that was returned in <code>/order/payment</code></td>
     </tr>
     <tr><td colspan="3" ></td></tr>
     <tr></tr>
