@@ -1001,6 +1001,36 @@ POST /order/complete
       <td><code>String</code></td>
       <td>Request's transaction id from the gateway service</td>
     </tr>
+   <tr><td colspan="3" ></td></tr>
+    <tr></tr>
+    <tr>
+      <th colspan="3" align="left">📥 Request</th>
+    </tr>
+    <tr></tr>
+    <tr>
+      <th colspan="2" align="left">Model </th>
+      <th align="left">Example </th>
+    </tr>
+    <tr>
+      <td colspan="2" align="left"><pre lang="yml">
+paymentIntentId: String</pre></td>
+      <td align="left"><pre lang="json">
+{
+    "paymentIntentId": "pi_..."
+}
+</pre></td>
+    <tr>
+      <th align="left">Key</th>
+      <th align="left">Required</th>
+      <th align="left">Description </th>
+    </tr>
+    <tr>
+      <td><code>paymentIntentId</code></td><td><code>Yes</code></td><td>paymentIntentId that was returned in <code>/order/payment<code></td>
+    </tr>
+    <tr></tr>
+    <tr>
+      <td><code>quantity</code></td><td><code>Yes</code></td><td>Quantity of the movie to add, must be between <code>[1-10]</code> (inclusive)</td>
+    </tr>
     <tr><td colspan="3" ></td></tr>
     <tr></tr>
     <tr>
@@ -1015,15 +1045,13 @@ POST /order/complete
       <td colspan="2" align="left"><pre lang="yml">
 result: Result
     code: Integer
-    message: String
-paymentIntentId: String</pre></td>
+    message: String</pre></td>
       <td align="left"><pre lang="json">
 {
     "result": {
         "code": 3070,
         "message": "Order Completed"
-    },
-    "paymentIntentId": "pi_..."
+    }
 }</pre></td>
     </tr>    
     <tr><td colspan="3" ></td></tr>
