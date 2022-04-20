@@ -19,7 +19,7 @@
  - [Result](#result)
  - [SignedJWT](#signedjwt)
  - [BigDecimal](#bigdecimal)
- - [Applying Discount](#applying-discount)
+ - [Applying Discount For Premium Users](#applying-discount-for-premium-users)
 
 #### [Endpoints](#endpoints)
 1. [POST: Cart Insert](#cart-insert)
