@@ -1027,10 +1027,6 @@ paymentIntentId: String</pre></td>
     <tr>
       <td><code>paymentIntentId</code></td><td><code>Yes</code></td><td>paymentIntentId that was returned in <code>/order/payment<code></td>
     </tr>
-    <tr></tr>
-    <tr>
-      <td><code>quantity</code></td><td><code>Yes</code></td><td>Quantity of the movie to add, must be between <code>[1-10]</code> (inclusive)</td>
-    </tr>
     <tr><td colspan="3" ></td></tr>
     <tr></tr>
     <tr>
