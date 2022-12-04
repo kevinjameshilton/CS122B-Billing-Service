@@ -91,7 +91,7 @@ public class CartController
     }
 
     @GetMapping("/cart/retrieve")
-    public ResponseEntity<ListRetrieveResponse> cartDelete(@AuthenticationPrincipal SignedJWT user)
+    public ResponseEntity<ListRetrieveResponse> cartRetrieve(@AuthenticationPrincipal SignedJWT user)
             throws ParseException
     {
         List<String> claims = user.getJWTClaimsSet().getStringListClaim(JWTManager.CLAIM_ROLES);
